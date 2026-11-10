@@ -7,8 +7,7 @@ import userRouter from "./routes/userRouter.js";
 
 const app = express(); //this is the main express application that will handle the incoming requests and send the responses. It is created using the express() function.
 
-app.use(bodyParser.json()); //this is a middleware that parses the incoming request bodies in a middleware before your handlers, available under the req.body property. It is used to parse JSON data.
-
+app.use(express.json());
 
 // Connect to MongoDB using Mongoose
 mongoose.connect("mongodb+srv://admin:123@cluster0.bqvy6fi.mongodb.net/").then(() => { 
