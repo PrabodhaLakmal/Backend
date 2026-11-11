@@ -4,10 +4,37 @@ import mongoose from "mongoose"; //this is a library that provides a straightfor
 import studentRouter from "./routes/studentRouter.js"; //this is a router that handles the routes for the student model. It is imported from the routes folder.
 import productRouter from "./routes/productRouter.js"; 
 import userRouter from "./routes/userRouter.js"; 
+import jwt, { decode } from 'jsonwebtoken';
 
 const app = express(); //this is the main express application that will handle the incoming requests and send the responses. It is created using the express() function.
 
-app.use(express.json());
+app.use(bodyParser.json());
+
+app.use(
+  (req, res, next)=>{
+    const tokenSring = req.header("Authorization")
+    if(tokenSring != null){
+      const token = tokenSring.replace("Bearer ", "")
+
+      jwt.verify(token, "cbc-batch-five#@2025", 
+        (err, decoded)=>{
+          if(decoded != null){
+            console.log(decoded)
+            req.user = decoded
+            next()
+          }else{
+            console.log("Invalid token")
+            res.status(403).json({
+              message : "Invalid token",
+            })
+          }
+        }
+      )
+    }else{
+      next()
+    }
+  }
+)
 
 // Connect to MongoDB using Mongoose
 mongoose.connect("mongodb+srv://admin:123@cluster0.bqvy6fi.mongodb.net/").then(() => { 
