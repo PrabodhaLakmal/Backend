@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 
 export function createUser(req, res){
 
-    const hashedPassword = bcrypt.hashSync(req.body.password, 10);
+    const hashedPassword = bcrypt.hashSync(req.body.password + "qwerty", 10);
 
     const user = new User({
         firstName: req.body.firstName,
@@ -32,7 +32,7 @@ export function createUser(req, res){
 
 export function loginUser(req, res){    
     const email = req.body.email;
-    const password = req.body.password;
+    const password = req.body.password + "qwerty";
 
     User.findOne({email: email}).then(
         (user)=>{
